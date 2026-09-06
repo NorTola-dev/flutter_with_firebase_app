@@ -32,8 +32,36 @@ class _HomePageState extends State<HomePage> {
           return ListView.builder(
             itemCount: studentList.length,
             itemBuilder: (context, index) {
+              var data = studentList[index];
               return Card(
-                child: ListTile(title: Text(studentList[index]['name'])),
+                child: ListTile(
+                  leading: CircleAvatar(child: Icon(Icons.person)),
+                  title: Text(data['name']),
+                  subtitle: Text(data['gender']),
+                  trailing: PopupMenuButton(
+                    itemBuilder: (context) {
+                      return [
+                        PopupMenuItem(
+                          onTap: () async {
+                            await serviceCloud.updateStudents(
+                              data.id,
+                              'sovat',
+                              'male',
+                              19,
+                            );
+                          },
+                          child: Text('Update'),
+                        ),
+                        PopupMenuItem(
+                          onTap: () async {
+                            await serviceCloud.deleteStudent(data.id);
+                          },
+                          child: Text('Delete'),
+                        ),
+                      ];
+                    },
+                  ),
+                ),
               );
             },
           );
